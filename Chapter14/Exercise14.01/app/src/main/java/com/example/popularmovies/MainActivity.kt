@@ -2,12 +2,12 @@ package com.example.popularmovies
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies.model.Movie
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,29 +28,32 @@ class MainActivity : AppCompatActivity() {
 
         val movieRepository = (application as MovieApplication).movieRepository
         val movieViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return MovieViewModel(movieRepository) as T
             }
-        }).get(MovieViewModel::class.java)
+        })[MovieViewModel::class.java]
 
-        movieViewModel.popularMovies.observe(this, { popularMovies ->
+        movieViewModel.popularMovies.observe(this) { popularMovies ->
             movieAdapter.addMovies(popularMovies
                 .filter {
-                    it.release_date.startsWith(
+                    it.releaseDate.startsWith(
                         Calendar.getInstance().get(Calendar.YEAR).toString()
                     )
                 }
-                .sortedBy { it.title }
+                .sortedByDescending { it.popularity }
             )
-        })
-        movieViewModel.getError().observe(this, { error ->
-            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
-        })
+        }
+        movieViewModel.error.observe(this) { error ->
+            if (error.isNotEmpty()) Snackbar.make(recyclerView, error, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun openMovieDetails(movie: Movie) {
         val intent = Intent(this, DetailsActivity::class.java).apply {
-            putExtra(DetailsActivity.EXTRA_MOVIE, movie)
+            putExtra(DetailsActivity.EXTRA_TITLE, movie.title)
+            putExtra(DetailsActivity.EXTRA_RELEASE, movie.releaseDate)
+            putExtra(DetailsActivity.EXTRA_OVERVIEW, movie.overview)
+            putExtra(DetailsActivity.EXTRA_POSTER, movie.posterPath)
         }
         startActivity(intent)
     }

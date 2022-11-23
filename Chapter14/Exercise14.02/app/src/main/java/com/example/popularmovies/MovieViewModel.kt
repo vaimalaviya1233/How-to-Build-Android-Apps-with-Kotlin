@@ -20,13 +20,13 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
             list.filter {
                 val cal = Calendar.getInstance()
                 cal.add(Calendar.MONTH, -1)
-                it.release_date.startsWith(
-                        "${cal.get(Calendar.YEAR)}-${cal.get(Calendar.MONTH) + 1}"
+                it.releaseDate.startsWith(
+                    "${cal.get(Calendar.YEAR)}-${cal.get(Calendar.MONTH) + 1}"
                 )
-            }.sortedBy { it.title }
+            }.sortedByDescending { it.popularity }
         }
 
-    fun getError(): LiveData<String> = movieRepository.error
+    val error: LiveData<String> = movieRepository.error
 
     private fun fetchPopularMovies() {
         viewModelScope.launch(Dispatchers.IO) {

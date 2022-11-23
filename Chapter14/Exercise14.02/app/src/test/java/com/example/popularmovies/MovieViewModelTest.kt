@@ -30,7 +30,7 @@ class MovieViewModelTest {
         val popularMovies = listOf(
             Movie(
                 title = "Title",
-                release_date = releaseDate
+                releaseDate = releaseDate
             )
         )
         movieLiveData.postValue(popularMovies)

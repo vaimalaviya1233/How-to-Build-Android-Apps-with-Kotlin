@@ -2,13 +2,9 @@ package com.example.popularmovies
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies.model.Movie
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val movieAdapter by lazy {
@@ -29,7 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun openMovieDetails(movie: Movie) {
         val intent = Intent(this, DetailsActivity::class.java).apply {
-            putExtra(DetailsActivity.EXTRA_MOVIE, movie)
+            putExtra(DetailsActivity.EXTRA_TITLE, movie.title)
+            putExtra(DetailsActivity.EXTRA_RELEASE, movie.releaseDate)
+            putExtra(DetailsActivity.EXTRA_OVERVIEW, movie.overview)
+            putExtra(DetailsActivity.EXTRA_POSTER, movie.posterPath)
         }
         startActivity(intent)
     }
