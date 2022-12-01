@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies.model.Movie
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val movieAdapter by lazy {

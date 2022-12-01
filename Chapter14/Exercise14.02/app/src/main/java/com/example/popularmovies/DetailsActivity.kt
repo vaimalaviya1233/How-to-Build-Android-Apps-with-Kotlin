@@ -39,6 +39,5 @@ class DetailsActivity : AppCompatActivity() {
             .placeholder(R.mipmap.ic_launcher)
             .fitCenter()
             .into(poster)
-
     }
 }
